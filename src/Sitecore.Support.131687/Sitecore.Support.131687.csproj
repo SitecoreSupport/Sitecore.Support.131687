@@ -53,7 +53,7 @@
     <Compile Include="Publishing\Pipelines\GetItemReferences\AddItemLinkReferences.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App_Data\Include\zzz\Sitecore.Support.131687.config">
+    <None Include="App_Config\Include\zzz\Sitecore.Support.131687.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </None>
