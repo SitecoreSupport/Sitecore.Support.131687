@@ -72,7 +72,10 @@ namespace Sitecore.Support.Publishing.Pipelines.GetItemReferences
 
       foreach (var relatedItem in relatedItems)
       {
-        result.AddRange(PublishQueue.GetParents(relatedItem));
+        if (!relatedItem.Paths.IsContentItem)
+        {
+          result.AddRange(PublishQueue.GetParents(relatedItem));
+        }       
         result.Add(relatedItem);
       }
 
