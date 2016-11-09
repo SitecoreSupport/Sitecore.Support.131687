@@ -3,9 +3,9 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("Sitecore.Support.131687")]
 [assembly: AssemblyProduct("Sitecore.Support.131687")]
-[assembly: AssemblyVersion("8.1.2.1")]
-[assembly: AssemblyFileVersion("8.1.2.1")]
-[assembly: AssemblyInformationalVersion("8.1.2 rev. 161107")]
+[assembly: AssemblyVersion("8.1.2.2")]
+[assembly: AssemblyFileVersion("8.1.2.2")]
+[assembly: AssemblyInformationalVersion("8.1.2 rev. 161108")]
 
 [assembly: AssemblyDescription("Sitecore Support Patch #131687.")]
 [assembly: AssemblyCompany("Sitecore Corporation")]

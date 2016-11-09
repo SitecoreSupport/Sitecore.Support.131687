@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Publishing\Pipelines\GetItemReferences\AddItemLinkReferences.cs" />
+    <Compile Include="Publishing\Pipelines\Publish\PublishQueue.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App_Config\Include\zzz\Sitecore.Support.131687.config">

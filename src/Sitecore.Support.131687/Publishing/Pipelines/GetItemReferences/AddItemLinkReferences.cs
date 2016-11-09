@@ -4,14 +4,13 @@ using Sitecore.Data.Items;
 using Sitecore.Diagnostics;
 using Sitecore.Publishing;
 using Sitecore.Publishing.Pipelines.GetItemReferences;
-using Sitecore.Publishing.Pipelines.Publish;
 using Sitecore.Publishing.Pipelines.PublishItem;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Sitecore.Support.Publishing.Pipelines.GetItemReferences
-{  
+{
   public class AddItemLinkReferences : GetItemReferencesProcessor
   {
     [NotNull]
@@ -33,7 +32,7 @@ namespace Sitecore.Support.Publishing.Pipelines.GetItemReferences
             return result;
           }
 
-          result.AddRange(this.GetReferences(sourceVersion, false));
+          result.AddRange(this.GetReferences(sourceVersion, false, context.PublishOptions.TargetDatabase));
           break;
         case PublishAction.PublishSharedFields:
           Item sourceItem = context.PublishHelper.GetSourceItem(context.ItemId);
@@ -42,7 +41,7 @@ namespace Sitecore.Support.Publishing.Pipelines.GetItemReferences
             return result;
           }
 
-          result.AddRange(this.GetReferences(sourceItem, true));
+          result.AddRange(this.GetReferences(sourceItem, true, context.PublishOptions.TargetDatabase));
           break;
         default:
           return result;
@@ -51,7 +50,7 @@ namespace Sitecore.Support.Publishing.Pipelines.GetItemReferences
       return result;
     }
 
-    private IEnumerable<Item> GetReferences([NotNull] Item item, bool sharedOnly)
+    private IEnumerable<Item> GetReferences([NotNull] Item item, bool sharedOnly, Database targetDatabase)
     {
       Assert.ArgumentNotNull(item, "item");
 
@@ -72,10 +71,7 @@ namespace Sitecore.Support.Publishing.Pipelines.GetItemReferences
 
       foreach (var relatedItem in relatedItems)
       {
-        if (!relatedItem.Paths.IsContentItem)
-        {
-          result.AddRange(PublishQueue.GetParents(relatedItem));
-        }       
+        result.AddRange(PublishQueue.GetParentsIfNotExist(relatedItem, targetDatabase));   
         result.Add(relatedItem);
       }
 
