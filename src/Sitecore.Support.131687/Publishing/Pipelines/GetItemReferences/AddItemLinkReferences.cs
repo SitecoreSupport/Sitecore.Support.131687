@@ -5,6 +5,7 @@ using Sitecore.Diagnostics;
 using Sitecore.Publishing;
 using Sitecore.Publishing.Pipelines.GetItemReferences;
 using Sitecore.Publishing.Pipelines.PublishItem;
+using Sitecore.Support.Publishing.Pipelines.Publish;
 using System;
 using System.Collections.Generic;
 using System.Linq;
