@@ -2,6 +2,8 @@
 
 When publishing a single item with enabled the `Publish Related Items` option, parent items (up to the `Home` item) and their related items could be published too.
 
+[![Total downloads](https://img.shields.io/github/downloads/SitecoreSupport/Sitecore.Support.131687/total.svg)](https://github.com/SitecoreSupport/Sitecore.Support.131687/releases)
+
 ## Main
 
 This repository contains Sitecore Patch #131687, which overrides the `AddItemLinkReferences` processor to drop a published item from a colection of its related items.
