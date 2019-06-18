@@ -1,51 +1,35 @@
-﻿using Sitecore.Collections;
-using Sitecore.Data;
-using Sitecore.Data.Comparers;
-using Sitecore.Data.Fields;
-using Sitecore.Data.Items;
-using Sitecore.Diagnostics;
-using Sitecore.Links;
-using Sitecore.Publishing;
-using Sitecore.Publishing.Pipelines.GetItemReferences;
-using Sitecore.Publishing.Pipelines.PublishItem;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-namespace Sitecore.Support.Publishing.Pipelines.GetItemReferences
+﻿namespace Sitecore.Support.Publishing.Pipelines.GetItemReferences
 {
-    /// <summary>
-    /// Adds referenced items from the links database.
-    /// </summary>
+
+    using Sitecore.Data;
+    using Sitecore.Data.Comparers;
+    using Sitecore.Data.Items;
+    using Sitecore.Diagnostics;
+    using Sitecore.Links;
+    using Sitecore.Publishing;
+    using Sitecore.Publishing.Pipelines.GetItemReferences;
+    using Sitecore.Publishing.Pipelines.PublishItem;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
     public class AddItemLinkReferences : GetItemReferencesProcessor
-    {
-        /// <summary>
-        /// Gets or sets a value indicating whether to deep scan the references.
-        /// </summary>
-        /// <value>
-        /// The deep scan.
-        /// </value>
+    {        
+        
         public bool DeepScan
         {
             get;
             set;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="T:Sitecore.Publishing.Pipelines.GetItemReferences.AddItemLinkReferences" /> class. 
-        /// </summary>
         public AddItemLinkReferences()
         {
             this.DeepScan = true;
         }
+        
 
-        /// <summary>
-        /// Gets the list of item references.
-        /// </summary>
-        /// <param name="context">The publish item context.</param>
-        /// <returns>
-        /// The list of item references.
-        /// </returns>
+        
+      
         protected override List<Item> GetItemReferences(PublishItemContext context)
         {
             Assert.ArgumentNotNull(context, "context");
@@ -62,7 +46,11 @@ namespace Sitecore.Support.Publishing.Pipelines.GetItemReferences
                 {
                     return items;
                 }
+
+                #region Modified code
+                // to original items.AddRange(this.GetReferences(sourceItem, true, new HashSet<ID>())) method added last parameter to pass context for custom PublishQueue.GetParentsIfNotExist() method
                 items.AddRange(this.GetReferences(sourceItem, true, new HashSet<ID>(), context.PublishOptions.TargetDatabase));
+                #endregion
             }
             else
             {
@@ -75,20 +63,17 @@ namespace Sitecore.Support.Publishing.Pipelines.GetItemReferences
                 {
                     return items;
                 }
+
+                #region Modified code
+                // to original items.AddRange(this.GetReferences(sourceItem, true, new HashSet<ID>())) method added last parameter to pass context to the custom PublishQueue.GetParentsIfNotExist() method
                 items.AddRange(this.GetReferences(versionToPublish, false, new HashSet<ID>(), context.PublishOptions.TargetDatabase));
+                #endregion
             }
             return items;
         }
 
-        /// <summary>
-        /// Gets the related references.
-        /// </summary>
-        /// <param name="item">The item.</param>
-        /// <param name="sharedOnly">Determines whether to process shared fields only or not.</param>
-        /// <param name="processedItems">Recursively processed items.</param>
-        /// <returns>
-        /// The related references.
-        /// </returns>
+        #region Modified code
+        // added additional 'targetDatabase' parameter to pass context to the custom PublishQueue.GetParentsIfNotExist() method
         private IEnumerable<Item> GetReferences(Item item, bool sharedOnly, HashSet<ID> processedItems, Database targetDatabase)
         {
             Assert.ArgumentNotNull(item, "item");
@@ -125,10 +110,17 @@ namespace Sitecore.Support.Publishing.Pipelines.GetItemReferences
                 {
                     items.AddRange(this.GetReferences(item1, sharedOnly, processedItems, targetDatabase));
                 }
+
+                #region Modified code
+                // original items.AddRange(PublishQueue.GetParents(item1)) method replaced with custom PublishQueue.GetParentsIfNotExist() method
                 items.AddRange(Sitecore.Support.Publishing.Pipelines.Publish.PublishQueue.GetParentsIfNotExist(item1, targetDatabase));
+                #endregion
+
                 items.Add(item1);
             }
             return items.Distinct<Item>(new ItemIdComparer());
         }
+
+        #endregion
     }
 }
